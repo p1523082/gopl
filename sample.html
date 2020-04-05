@@ -4,27 +4,26 @@
 	</head>
 	<body>
 		this page is sample page.
-		<h1>{{.Value}}</h1>
+		<h1 id="item">{{.Value}}</h1>
 	</body>
 	<script>
-		let i = 0;
 		function testGet(url) {
 			var request = new XMLHttpRequest();
-			request.open('GET', url + `?value=${i}`);
+			request.open('GET', url);
 			request.onreadystatechange = function () {
 				if (request.readyState != 4) {
 					// requesting
 				} else if (request.status != 200) {
 					// failed
 				} else {
-						//
-					// var result = request.responseText;
+					var result = request.responseText;
+					console.log(result);
+					document.getElementById("item").innerText = result;
 				}
 			};
 			request.send(null);
 		}
 		setInterval(function(){
-			i++;
 			testGet("http://localhost:1323")
 		}, 1000)
 	</script>

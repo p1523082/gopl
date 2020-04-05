@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 var time int = 0
@@ -27,6 +26,7 @@ func main() {
 }
 
 func printHTML(w http.ResponseWriter, r *http.Request) {
+
 	// sample.htmlをテンプレートとして読み込む
 	tmpl := template.Must(template.ParseFiles("./sample.html"))
 
@@ -46,24 +46,16 @@ func printHTML(w http.ResponseWriter, r *http.Request) {
 }
 
 func testHandler(w http.ResponseWriter, r *http.Request) {
-	// valueというパラメータをint型へ変換する
-	queryValue, err := strconv.Atoi(r.URL.Query().Get("value"))
+	// アクセス一回につき、timeをインクリメントする
+	time += 1
 
-	// エラーが発生していた場合、アプリケーションを終了する
-	if err != nil {
-		log.Fatal("Atoi Error!!!")
-	}
+	fmt.Printf("now value is %d\n",time)
 
 	// パラメータをresponseへ書き込む
-	_, err = fmt.Fprintf(w, "%v", queryValue)
+	_, err := fmt.Fprintf(w, "%v", time)
 
 	// エラーが発生していた場合、アプリケーションを終了する
 	if err != nil {
 		log.Fatal("Fprintf Error!!!")
 	}
-
-	// 受けたパラメータを表示
-	fmt.Println("param is ", queryValue)
-
-	time = queryValue
 }
